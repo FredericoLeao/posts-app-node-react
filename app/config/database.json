@@ -1,0 +1,7 @@
+{
+    "host": "db",
+    "port": 3306,
+    "database": "posts-app-db",
+    "username": "posts-app-user",
+    "password": "posts-app-pass"
+}

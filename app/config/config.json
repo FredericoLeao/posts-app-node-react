@@ -1,0 +1,26 @@
+{
+  "development": {
+    "host": "db",
+    "port": 3306,
+    "database": "posts-app-db",
+    "username": "posts-app-user",
+    "password": "posts-app-pass",
+    "dialect": "mariadb"
+  },
+  "test": {
+    "host": "db",
+    "port": 3306,
+    "database": "posts-app-db-test",
+    "username": "posts-app-user",
+    "password": "posts-app-pass",
+    "dialect": "mariadb"
+  },
+  "production": {
+    "host": "db",
+    "port": 3306,
+    "database": "posts-app-db",
+    "username": "posts-app-user",
+    "password": "posts-app-pass",
+    "dialect": "mariadb"
+  }
+}
