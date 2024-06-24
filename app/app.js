@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
+const AuthController = require('./controllers/auth')
 const UserController = require('./controllers/user')
 
 // routes
@@ -13,12 +14,20 @@ app.get('/status', (req, res) => {
     res.send(status);
 });
 
+app.post('/login', AuthController.validate('login'), AuthController.login)
+
 // - user routes
 app.post(
     '/user/signup',
     UserController.validate('createUser'),
     UserController.createUser
 );
+
+// authenticated routes
+const authMiddleware = require('./middleware/auth')
+app.use('*', authMiddleware)
+
+app.get('/api/profile', UserController.getProfile)
 
 // server
 const PORT = process.env.PORT || 8000;

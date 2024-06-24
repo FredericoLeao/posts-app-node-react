@@ -44,3 +44,8 @@ exports.createUser = async (req, res, next) => {
         return next(err)
     }
 }
+
+exports.getProfile = async (req, res, next) => {
+    const profileData = await UserService.getProfile(req.userId)
+    return res.status(200).json(profileData);
+}
