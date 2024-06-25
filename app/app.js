@@ -5,6 +5,7 @@ app.use(express.json());
 
 const AuthController = require('./controllers/auth')
 const UserController = require('./controllers/user')
+const PostController = require('./controllers/post')
 
 // routes
 app.get('/status', (req, res) => {
@@ -32,6 +33,12 @@ app.put(
     '/api/profile',
     UserController.validate('updateProfile'),
     UserController.updateProfile
+);
+
+app.post(
+    '/api/post',
+    PostController.validate('createPost'),
+    PostController.createPost,
 );
 
 // server

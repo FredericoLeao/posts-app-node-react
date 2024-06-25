@@ -1,12 +1,10 @@
 const axios = require('axios');
+const userTestUtils = require('./utils/userTestUtils')
 
 test('alterar dados do próprio perfil', async () => {
-    let loginData = {
-        email: 'email@exemplo.com',
-        password: 'abc123',
-    }
-    const responseLogin = await axios.post('http://localhost:8000/login',loginData)
-    let token = responseLogin.data.token
+    const user = await userTestUtils.createDefault();
+    const token = await userTestUtils.loginDefault();
+
     let profileDataUpdate = {
         name: 'João Atualizado',
         password: 'Nova Senha',

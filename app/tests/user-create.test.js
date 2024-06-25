@@ -1,4 +1,5 @@
 const axios = require('axios')
+const userTestUtils = require('./utils/userTestUtils')
 
 test('create user - invalid email', async function () {
     let createUserData = {
@@ -41,13 +42,12 @@ test('create user - invalid confirm password', async function () {
 })
 
 test('create user', async function () {
-    let createUserData = {
-        name: 'Joao Teste',
-        email: 'email@exemplo.com',
-        password: 'abc123',
-        confirmPassword: 'abc123',
-    }
-    const response = await axios
-        .post('http://localhost:8000/user/signup', createUserData);
-    expect(response.data.name).toBe(createUserData.name)
+    const createUser = userTestUtils.createDefault()
+    createUser
+        .then((res) => {
+            expect(res.data.name).toBe("Joao Teste")
+        })
+        .catch((err) => {
+            expect(err.response.status).toBe(200)
+        });
 })
