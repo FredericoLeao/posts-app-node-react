@@ -32,6 +32,35 @@ exports.createPost = async (req, res, next) => {
     }
 }
 
+exports.updatePost = async (req, res, next) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            res.status(422).json({ errors: errors.array() });
+            return;
+        }
+
+        const post = await PostService.update({
+            id: req.params.postId,
+            userId: req.userId,
+            title: req.body.title,
+            content: req.body.content,
+            image: req.body.image
+        });
+        res.json(post);
+    } catch (err) {
+        return next(err)
+    }
+}
+exports.getPost = async (req, res, next) => {
+    try {
+        const post = await PostService.get(req.params.postId);
+        res.json(post);
+    } catch (err) {
+        return next(err);
+    }
+}
+
 // exports.getPost = async (req, res, next) => {
 //     const postData = await UserService.getProfile(req.userId)
 //     return res.status(200).json(profileData);

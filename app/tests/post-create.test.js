@@ -1,6 +1,10 @@
 const axios = require('axios');
 const userTestUtils = require('./utils/userTestUtils');
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 test('create post', async function () {
     const createUser = await userTestUtils.createDefault();
     const token = await userTestUtils.loginDefault();
@@ -52,7 +56,6 @@ test('falha create post - validação', async function () {
         });
 });
 
-// criar post anexando imagem
 test('create post - com imagem', async function () {
     const createUser = await userTestUtils.createDefault();
     const token = await userTestUtils.loginDefault();
@@ -73,8 +76,49 @@ test('create post - com imagem', async function () {
             expect(res.status).toBe(200)
         })
         .catch((err) => {
-            expect(res.status).toBe(200)
+            expect(err.response.status).toBe(200)
         })
 });
 
-// atualizar titulo e/ou conteudo (checar revision)
+test('update post - mantem histórico', async function () {
+    const createUser = await userTestUtils.createDefault();
+    const token = await userTestUtils.loginDefault();
+    const base64Image = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z/C/HgAGgwJ/lK3Q6wAAAABJRU5ErkJggg==';
+
+    const createPostData = {
+        content: 'Conteúdo do post teste',
+        title: 'Título do post teste',
+        image: base64Image,
+    }
+    const postResponse = await axios
+        .post(
+            'http://localhost:8000/api/post',
+            createPostData,
+            { headers: { Authorization: token } },
+        )
+
+    let updatePostData = {
+        content: 'Conteúdo do post teste Atualizado',
+        title: 'Título do post teste Atualizado',
+        image: base64Image,
+    }
+    await sleep(1000);
+    const response = await axios
+        .put(
+            `http://localhost:8000/api/post/${postResponse.data.id}`,
+            updatePostData,
+            { headers: { Authorization: token } },
+        )
+        .then((res) => {
+            expect(res.status).toBe(200)
+        })
+        .catch((err) => {
+            expect(err.response.status).toBe(200)
+        })
+        const post = await axios
+            .get(
+                `http://localhost:8000/api/post/${postResponse.data.id}`,
+                { headers: { Authorization: token } },
+            )
+        expect(post.data.title).toBe('Título do post teste Atualizado');
+});

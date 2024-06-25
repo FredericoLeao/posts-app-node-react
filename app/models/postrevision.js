@@ -17,7 +17,8 @@ module.exports = (sequelize) => {
   PostRevision.init({
     postId: DataTypes.INTEGER,
     content: DataTypes.TEXT,
-    title: DataTypes.STRING
+    title: DataTypes.STRING,
+    image: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'PostRevision',

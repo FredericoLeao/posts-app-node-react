@@ -40,6 +40,15 @@ app.post(
     PostController.validate('createPost'),
     PostController.createPost,
 );
+app.put(
+    '/api/post/:postId',
+    PostController.validate('createPost'),
+    PostController.updatePost,
+);
+app.get(
+    '/api/post/:postId',
+    PostController.getPost,
+);
 
 // server
 const PORT = process.env.PORT || 8000;
