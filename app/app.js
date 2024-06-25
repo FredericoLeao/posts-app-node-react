@@ -25,6 +25,8 @@ app.post(
     UserController.createUser
 );
 
+app.get('/api/post/:postId/read', PostController.getRead);
+
 // authenticated routes
 const authMiddleware = require('./middleware/auth');
 app.use('*', authMiddleware);

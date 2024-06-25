@@ -27,12 +27,22 @@ exports.update = async (updateData) => {
     return JSON.stringify({ ...post, ...postRevision})
 }
 
-exports.get = async (postId) => {
+exports.get = async (postId, countView = false) => {
     const post = await Post(db).findOne({ where: { id: postId }});
     const postRevision = await post.lastRevision;
     if (!postRevision)
         return { error: true, message: 'Post não encontrado' }
-    return postRevision;
+    if (countView) {
+        if (!post.viewCount) post.viewCount = 0;
+        post.viewCount = post.viewCount+1;
+        await post.save();
+    }
+
+    return {
+        ...JSON.parse(JSON.stringify(post)),
+        title: postRevision.title,
+        content: postRevision.content,
+    }
 }
 
 const saveRevision = async (createData, postId) => {

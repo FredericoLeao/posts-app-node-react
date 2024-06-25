@@ -61,3 +61,12 @@ exports.getPost = async (req, res, next) => {
         return next(err);
     }
 }
+
+exports.getRead = async (req, res, next) => {
+    try {
+        const post = await PostService.get(req.params.postId, true);
+        res.json(post);
+    } catch (err) {
+        return next(err);
+    }
+}

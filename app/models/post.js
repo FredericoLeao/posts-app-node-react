@@ -19,6 +19,7 @@ module.exports = (sequelize) => {
   }
   Post.init({
     userId: DataTypes.INTEGER,
+    viewCount: DataTypes.INTEGER,
     lastRevision: {
       type: DataTypes.VIRTUAL,
       get() {

@@ -122,3 +122,27 @@ test('update post - mantem histórico', async function () {
             )
         expect(post.data.title).toBe('Título do post teste Atualizado');
 });
+
+test('post read - views count', async () => {
+    const createUser = await userTestUtils.createDefault();
+    const token = await userTestUtils.loginDefault();
+
+    let createPostData = {
+        content: 'Conteúdo de teste para views count',
+        title: 'Post teste views count',
+    }
+    const postResponse = await axios
+        .post(
+            'http://localhost:8000/api/post',
+            createPostData,
+            { headers: { Authorization: token } },
+        )
+
+    let postRead = await axios
+        .get(`http://localhost:8000/api/post/${postResponse.data.id}/read`)
+    expect(postRead.status).toBe(200);
+    postRead = await axios
+        .get(`http://localhost:8000/api/post/${postResponse.data.id}/read`)
+    expect(postRead.status).toBe(200);
+    expect(postRead.data.viewCount).toBe(2);
+});
