@@ -1,8 +1,11 @@
 'use strict';
+
 const {
   Model,
   DataTypes,
 } = require('sequelize');
+const PostCommentService = require('../services/postCommentService');
+
 module.exports = (sequelize) => {
   class PostComment extends Model {
     /**
@@ -21,6 +24,11 @@ module.exports = (sequelize) => {
     deletedAt: DataTypes.DATE,
     deletedUserId: DataTypes.INTEGER,
   }, {
+    hooks: {
+      afterCreate: (postComment, options) => {
+        PostCommentService.sendNewPostCommentEmail(postComment);
+      }
+    },
     sequelize,
     modelName: 'PostComment',
     paranoid: true,
