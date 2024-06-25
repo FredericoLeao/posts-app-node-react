@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken')
 
 module.exports = (req, res, next) => {
-    console.log('oi middleware')
     const token = req.header('Authorization')
     if (!token) {
         return res.status(401).json({ error: 'Acesso negado' })
