@@ -3,6 +3,9 @@ const {
   Model,
   DataTypes,
 } = require('sequelize');
+
+const PostRevision = require('./postrevision');
+
 module.exports = (sequelize) => {
   class Post extends Model {
     /**
@@ -15,7 +18,19 @@ module.exports = (sequelize) => {
     }
   }
   Post.init({
-    userId: DataTypes.INTEGER
+    userId: DataTypes.INTEGER,
+    lastRevision: {
+      type: DataTypes.VIRTUAL,
+      get() {
+        return PostRevision(sequelize)
+          .findOne({
+            where: { postId: this.get('id') },
+            order: [ ['createdAt', 'DESC'] ],
+            offset: 0,
+            limit: 1,
+          });
+      }
+    },
   }, {
     sequelize,
     modelName: 'Post',

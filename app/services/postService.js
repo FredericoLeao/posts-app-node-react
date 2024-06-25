@@ -29,20 +29,10 @@ exports.update = async (updateData) => {
 
 exports.get = async (postId) => {
     const post = await Post(db).findOne({ where: { id: postId }});
-    const postRevision = await PostRevision(db)
-        .findAll({
-            where: {
-                postId: postId,
-            },
-            order: [
-                ['createdAt', 'DESC']
-            ],
-            offset: 0,
-            limit: 1,
-        });
+    const postRevision = await post.lastRevision;
     if (!postRevision)
         return { error: true, message: 'Post não encontrado' }
-    return postRevision[0];
+    return postRevision;
 }
 
 const saveRevision = async (createData, postId) => {
