@@ -1,7 +1,6 @@
 const axios = require('axios');
-const { header } = require('express-validator');
 
-test('user login - validação email - inválido', async () => {
+test('falha user login - email inválido', async () => {
     let loginData = {
         email: 'email@exemplo',
         password: 'abc123',
@@ -19,7 +18,7 @@ test('user login - validação email - inválido', async () => {
         });
 })
 
-test('user login - senha errada', async () => {
+test('falha user login - senha errada', async () => {
     let loginData = {
         email: 'email@exemplo.com',
         password: 'xyz456',
@@ -37,7 +36,7 @@ test('user login - senha errada', async () => {
         });
 })
 
-test('user login - usuario nao existe', async () => {
+test('falha user login - usuario nao existe', async () => {
     let loginData = {
         email: 'emailnaoexiste@naoexiste.com',
         password: 'xyz456',
@@ -73,7 +72,7 @@ test('user login ok', async () => {
         });
 })
 
-test('acesso rota restrita sem token - acesso negado', async () => {
+test('falha acesso rota restrita - sem token - acesso negado', async () => {
     const response = await axios.get('http://localhost:8000/api/profile/')
         .then((res) => {
             expect(res.status).toBe(403)
