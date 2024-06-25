@@ -6,6 +6,7 @@ app.use(express.json());
 const AuthController = require('./controllers/auth')
 const UserController = require('./controllers/user')
 const PostController = require('./controllers/post')
+const PostCommentController = require('./controllers/postComment')
 
 // routes
 app.get('/status', (req, res) => {
@@ -28,13 +29,14 @@ app.post(
 const authMiddleware = require('./middleware/auth');
 app.use('*', authMiddleware);
 
+// Profile
 app.get('/api/profile', UserController.getProfile);
 app.put(
     '/api/profile',
     UserController.validate('updateProfile'),
     UserController.updateProfile
 );
-
+// Posts
 app.post(
     '/api/post',
     PostController.validate('createPost'),
@@ -48,6 +50,21 @@ app.put(
 app.get(
     '/api/post/:postId',
     PostController.getPost,
+);
+// Comments
+app.post(
+    '/api/post/:postId/comment/',
+    PostCommentController.validate('createPostComment'),
+    PostCommentController.createPostComment,
+);
+app.put(
+    '/api/post/:postId/comment/:commentId',
+    PostCommentController.validate('createPostComment'),
+    PostCommentController.updatePostComment,
+);
+app.delete(
+    '/api/post/:postId/comment/:commentId',
+    PostCommentController.deletePostComment,
 );
 
 // server

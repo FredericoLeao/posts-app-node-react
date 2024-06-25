@@ -52,6 +52,7 @@ exports.updatePost = async (req, res, next) => {
         return next(err)
     }
 }
+
 exports.getPost = async (req, res, next) => {
     try {
         const post = await PostService.get(req.params.postId);
@@ -60,8 +61,3 @@ exports.getPost = async (req, res, next) => {
         return next(err);
     }
 }
-
-// exports.getPost = async (req, res, next) => {
-//     const postData = await UserService.getProfile(req.userId)
-//     return res.status(200).json(profileData);
-// }
