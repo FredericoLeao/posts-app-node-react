@@ -14,7 +14,7 @@ app.get('/status', (req, res) => {
     res.send(status);
 });
 
-app.post('/login', AuthController.validate('login'), AuthController.login)
+app.post('/login', AuthController.validate('login'), AuthController.login);
 
 // - user routes
 app.post(
@@ -24,10 +24,15 @@ app.post(
 );
 
 // authenticated routes
-const authMiddleware = require('./middleware/auth')
-app.use('*', authMiddleware)
+const authMiddleware = require('./middleware/auth');
+app.use('*', authMiddleware);
 
-app.get('/api/profile', UserController.getProfile)
+app.get('/api/profile', UserController.getProfile);
+app.put(
+    '/api/profile',
+    UserController.validate('updateProfile'),
+    UserController.updateProfile
+);
 
 // server
 const PORT = process.env.PORT || 8000;
