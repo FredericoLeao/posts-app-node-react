@@ -1,64 +1,86 @@
-import { useState } from "react"
+import { componentDidMount, useEffect, useState } from "react"
 import axios from "axios"
-import { Link } from "react-router-dom"
 
 export default function SignUpPage () {
+    const [myProfileData, setMyProfileData] = useState({})
+    const [httpLoading, setHttpLoading] = useState(false)
+    const [formSuccess, setFormSuccess] = useState(false)
+    const [formError, setFormError] = useState('');
     const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
-    const [signupSuccess, setSigupSuccess] = useState(false)
-    const [formError, setFormError] = useState('');
+
+    useEffect(() => {
+        setHttpLoading(true)
+        axios
+            .get(
+                'http://localhost:8000/api/profile',
+                { headers: { Authorization: sessionStorage.getItem('postsapp-login-token') } }
+            )
+            .then((res) => {
+                setMyProfileData(res.data)
+                setName(res.data.name)
+            })
+            .catch((res) => {
+              console.log('erro ??')
+              console.log(res.response?.data)
+              setMyProfileData({ error: true })
+            })
+            .finally(() => setHttpLoading(false))
+    }, []);
 
     const submit = () => {
-        const postData = {
-            name: name,
-            email: email,
-            password: password,
-            confirmPassword: confirmPassword,
-        }
-        axios.post('http://localhost:8000/user/signup', postData)
+        axios
+            .put(
+                'http://localhost:8000/api/profile',
+                {
+                    name: name,
+                    password: password,
+                    confirmPassword: confirmPassword,
+                },
+                { headers: { Authorization: sessionStorage.getItem('postsapp-login-token') } }
+            )
             .then((res) => {
-                console.log('ok!')
-                console.log(res.data)
+                setFormSuccess(true)
                 setFormError('')
-                setSigupSuccess(true)
             })
             .catch((err) => {
-                setSigupSuccess(false)
-                console.log(err.response.data);
+                setFormSuccess(false)
                 if (err.response?.data?.errors)
                     setFormError(err.response.data.errors[0].msg)
-            })
-            .finally(() => {
+                else if (err.response?.data?.message)
+                    setFormError(err.response.data.message)
             })
     }
-
     const FormError = () => {
         if (formError != '')
             return (
                 <div className="alert alert-danger my-2">{formError}</div>
             )
     }
-    const SignupSuccess = () => {
-        if (signupSuccess === true)
+    const FormSuccess = () => {
+        if (formSuccess === true)
             return (
-                <div className="alert alert-success my-2">
-                    Cadastro efetuado! Vá para o <Link to="/login">login</Link>
-                </div>
+                <div className="alert alert-success my-2">Atualizado!</div>
             )
     }
 
     return (
-            <div className="signup">
+            <div className="">
+
                 <div className="head">
+                    <FormSuccess />
                     <FormError />
-                    <SignupSuccess />
                 </div>
                 <form>
+                <div className="row mb-3">
+                    <div class="border-bottom">
+                    {myProfileData.email}
+                    </div>
+                </div>
                 <div className="row mb-1">
                     <div>
-                        <label for="name">Nome:</label>
+                        <label>Nome:</label>
                         <input
                             id="name"
                             type="text"
@@ -66,18 +88,6 @@ export default function SignUpPage () {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         />
-                    </div>
-                </div>
-                <div className="row my-1">
-                    <div className="">
-                    <label>Email:</label>
-                    <input
-                        id="email"
-                        type="text"
-                        className="form-control"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
                     </div>
                 </div>
                 <div className="row my-1">
@@ -107,7 +117,7 @@ export default function SignUpPage () {
                     <input
                         id="email"
                         type="button"
-                        value="Cadastrar"
+                        value="Atualizar"
                         className="btn btn-primary form-control"
                         onClick={(e) => submit()}
                     />

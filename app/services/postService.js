@@ -128,3 +128,18 @@ exports.report = async () => {
         })
     );
 }
+
+exports.getByUser = async (userId) => {
+    const posts = await Post(db).findAll({ where: { userId: userId } });
+    return Promise.all(posts.map(async (p) => {
+        const _p = await p.get();
+        const postRevision = await _p.lastRevision;
+        const postComments = await PostCommentService.getByPost(p.id);
+        return {
+            ..._p,
+            title: postRevision.title,
+            content: postRevision.content,
+            commentCount: postComments.length,
+        }
+    }));
+}

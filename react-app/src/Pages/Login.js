@@ -1,37 +1,35 @@
 import { useState } from "react"
 import axios from "axios"
-import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
-export default function SignUpPage () {
-    const [name, setName] = useState('')
+export default function LoginPage () {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [confirmPassword, setConfirmPassword] = useState('')
-    const [signupSuccess, setSigupSuccess] = useState(false)
+    const [loginSuccess, setLoginSuccess] = useState(false)
     const [formError, setFormError] = useState('');
 
+    const navigate = useNavigate()
+
     const submit = () => {
-        const postData = {
-            name: name,
+        const loginData = {
             email: email,
             password: password,
-            confirmPassword: confirmPassword,
         }
-        axios.post('http://localhost:8000/user/signup', postData)
-            .then((res) => {
-                console.log('ok!')
-                console.log(res.data)
+        axios.post('http://localhost:8000/api/login', loginData)
+            .then(async (res) => {
                 setFormError('')
-                setSigupSuccess(true)
+                setLoginSuccess(true)
+                sessionStorage.setItem('postsapp-login-token', res.data.token);
+                navigate('/meus-dados')
             })
             .catch((err) => {
-                setSigupSuccess(false)
-                console.log(err.response.data);
+                setLoginSuccess(false)
                 if (err.response?.data?.errors)
                     setFormError(err.response.data.errors[0].msg)
-            })
-            .finally(() => {
-            })
+                else if (err.response?.data?.message)
+                    setFormError(err.response.data.message)
+                else setFormError('Erro de login')
+            });
     }
 
     const FormError = () => {
@@ -40,12 +38,10 @@ export default function SignUpPage () {
                 <div className="alert alert-danger my-2">{formError}</div>
             )
     }
-    const SignupSuccess = () => {
-        if (signupSuccess === true)
+    const LoginSuccess = () => {
+        if (loginSuccess === true)
             return (
-                <div className="alert alert-success my-2">
-                    Cadastro efetuado! Vá para o <Link to="/login">login</Link>
-                </div>
+                <div className="alert alert-success my-2">Login efetuado!</div>
             )
     }
 
@@ -53,21 +49,9 @@ export default function SignUpPage () {
             <div className="signup">
                 <div className="head">
                     <FormError />
-                    <SignupSuccess />
+                    <LoginSuccess />
                 </div>
                 <form>
-                <div className="row mb-1">
-                    <div>
-                        <label for="name">Nome:</label>
-                        <input
-                            id="name"
-                            type="text"
-                            className="form-control"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                        />
-                    </div>
-                </div>
                 <div className="row my-1">
                     <div className="">
                     <label>Email:</label>
@@ -91,23 +75,12 @@ export default function SignUpPage () {
                     />
                     </div>
                 </div>
-                <div className="row my-1">
-                    <div className="">
-                    <label>Confirme a senha:</label>
-                    <input
-                        type="password"
-                        className="form-control"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                    />
-                    </div>
-                </div>
                 <div className="row mt-2">
                     <div className="">
                     <input
                         id="email"
                         type="button"
-                        value="Cadastrar"
+                        value="Entrar"
                         className="btn btn-primary form-control"
                         onClick={(e) => submit()}
                     />

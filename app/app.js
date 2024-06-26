@@ -43,6 +43,9 @@ app.put(
     UserController.validate('updateProfile'),
     UserController.updateProfile
 );
+
+app.get('/api/my-posts', PostController.getMyPosts);
+
 // Posts
 app.post(
     '/api/post',
@@ -58,6 +61,7 @@ app.get(
     '/api/post/:postId',
     PostController.getPost,
 );
+
 // Comments
 app.post(
     '/api/post/:postId/comment/',

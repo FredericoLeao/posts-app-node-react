@@ -9,6 +9,11 @@
   display: flex;
   flex-direction: column;
 }
-.signup .head {
+.head {
   height: 80px;
+}
+
+.myPosts {
+  width: 600px;
+  align-items: center;
 }

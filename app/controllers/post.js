@@ -88,3 +88,8 @@ exports.dislike = async (req, res, next) => {
         return next(err);
     }
 }
+
+exports.getMyPosts = async (req, res, next) => {
+    const posts = await PostService.getByUser(req.userId);
+    res.json(posts);
+}
