@@ -1,4 +1,16 @@
 services:
+  app-fe:
+    build:
+      dockerfile: docker/Dockerfile.app
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./react-app:/app/
+    networks:
+      - default
+    depends_on:
+      - db
+    command: sh -c "mkdir /app; cd /app;npx create-react-app .;npm start"
   app-be:
     build:
       dockerfile: docker/Dockerfile.app
