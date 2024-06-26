@@ -70,3 +70,21 @@ exports.getRead = async (req, res, next) => {
         return next(err);
     }
 }
+
+exports.like = async (req, res, next) => {
+    try {
+        const post = await PostService.like(req.params.postId);
+        res.json(post);
+    } catch (err) {
+        next(err);
+    }
+}
+
+exports.dislike = async (req, res, next) => {
+    try {
+        const post = await PostService.dislike(req.params.postId);
+        res.json(post);
+    } catch (err) {
+        return next(err);
+    }
+}

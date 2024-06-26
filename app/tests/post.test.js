@@ -146,3 +146,65 @@ test('post read - views count', async () => {
     expect(postRead.status).toBe(200);
     expect(postRead.data.viewCount).toBe(2);
 });
+
+test('post like count', async () => {
+    const createUser = await userTestUtils.createDefault();
+    const token = await userTestUtils.loginDefault();
+
+    let createPostData = {
+        content: 'Conteúdo de teste para LIKES count',
+        title: 'Post teste LIKES count',
+    }
+    const postResponse = await axios
+        .post(
+            'http://localhost:8000/api/post',
+            createPostData,
+            { headers: { Authorization: token } },
+        );
+    let postLike = await axios
+         .post(
+            `http://localhost:8000/api/post/${postResponse.data.id}/like`,
+            {},
+            { headers: { Authorization: token } },
+        );
+    postLike = await axios
+        .post(
+            `http://localhost:8000/api/post/${postResponse.data.id}/like`,
+            {},
+            { headers: { Authorization: token } },
+        );
+    let postRead = await axios
+        .get(`http://localhost:8000/api/post/${postResponse.data.id}/read`)
+    expect(postRead.data.likeCount).toBe(2);
+});
+
+test('post dislike count', async () => {
+    const createUser = await userTestUtils.createDefault();
+    const token = await userTestUtils.loginDefault();
+
+    let createPostData = {
+        content: 'Conteúdo de teste para DISLIKES count',
+        title: 'Post teste dislikes count',
+    }
+    const postResponse = await axios
+        .post(
+            'http://localhost:8000/api/post',
+            createPostData,
+            { headers: { Authorization: token } },
+        );
+    let postDislike = await axios
+         .post(
+            `http://localhost:8000/api/post/${postResponse.data.id}/dislike`,
+            {},
+            { headers: { Authorization: token } },
+        );
+    postDislike = await axios
+        .post(
+            `http://localhost:8000/api/post/${postResponse.data.id}/dislike`,
+            {},
+            { headers: { Authorization: token } },
+        );
+    let postRead = await axios
+        .get(`http://localhost:8000/api/post/${postResponse.data.id}/read`)
+    expect(postRead.data.dislikeCount).toBe(2);
+});

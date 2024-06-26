@@ -68,6 +68,14 @@ app.delete(
     '/api/post/:postId/comment/:commentId',
     PostCommentController.deletePostComment,
 );
+app.post(
+    '/api/post/:postId/like',
+    PostController.like,
+);
+app.post(
+    '/api/post/:postId/dislike',
+    PostController.dislike,
+);
 
 // server
 const PORT = process.env.PORT || 8000;

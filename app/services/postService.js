@@ -93,3 +93,21 @@ const saveRevision = async (createData, postId) => {
     }
     return postRevisionModel;
 }
+
+exports.like = async (postId) => {
+    const post = await Post(db).findByPk(postId);
+    if (!post)
+        return { error: true, message: 'Post não encontrado' }
+    post.likeCount = post.likeCount+1;
+    await post.save();
+    return post;
+}
+
+exports.dislike = async (postId) => {
+    const post = await Post(db).findByPk(postId);
+    if (!post)
+        return { error: true, message: 'Post não encontrado' }
+    post.dislikeCount = post.dislikeCount+1;
+    await post.save();
+    return post;
+}
