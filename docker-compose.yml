@@ -8,6 +8,8 @@ services:
       - ./app:/app
     networks:
       - default
+    depends_on:
+      - db
     command: sh -c "cd /app && npm install && npx sequelize db:migrate && npx nodemon app.js"
   db:
     image: "mariadb:11"

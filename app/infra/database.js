@@ -2,7 +2,7 @@ const dbconfig = require("../config/database.json")
 const { Sequelize } = require('sequelize')
 
 module.exports = new Sequelize({
-    'dialect': 'mariadb',
+    'dialect': 'mysql',
     'database': dbconfig.database,
     'host': dbconfig.host,
     'port': dbconfig.port,
