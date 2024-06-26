@@ -5,10 +5,12 @@ exports.validate = (method) => {
     switch (method) {
         case 'createUser': {
             return [
-                body('name', 'O campo Nome é obrigatório').exists(),
+                body('name', 'O campo Nome é obrigatório').exists().notEmpty(),
+                body('name', 'O campo Nome deve ter ao menos 3 caracteres').isLength({ min: 3}),
                 body('email', 'O campo E-Mail é obrigatório').exists(),
                 body('email', 'E-Mail inválido').isEmail(),
-                body('password', 'O campo Senha é obrigatório').exists(),
+                body('password', 'O campo Senha é obrigatório').exists().notEmpty(),
+                body('password', 'O campo Senha deve ter ao menos 6 caracteres').isLength({ min: 6}),
                 body('confirmPassword', 'O campo Confirmar Senha é obrigatório').exists(),
                 body('confirmPassword', 'Senha não confere')
                     .custom((value, { req }) => {
