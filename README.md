@@ -11,7 +11,7 @@
 
 # Observações
 
-- Obs: Foi dada uma ênfase maior na aplicação do back-end, sendo desenvolvido todos os recursos sugeridos no escopo do projeto, aplicando conceitos de arquitetura e testes unitários com cobertura de quase 100%. O funcionamento dos recursos pode ser conferido nos testes em "/app/tests".
+- Obs: Foi dada uma ênfase maior na aplicação do back-end, sendo desenvolvido todos os recursos sugeridos no escopo do projeto, aplicando conceitos de arquitetura e testes automatizados com cobertura de quase 100%. O funcionamento dos recursos pode ser conferido nos testes em "/app/tests".
 
 - Obs front-end: Apenas algumas páginas foram desenvolvidas, para ser possível aplicar os recursos desenvolvidos no back-end. (Contém algumas falhas, e não contém todos os recursos, não foi possível finalizar a tempo). O cadastro, login, e posts estão funcionando, mas podem precisar de um "F5" em alguns momentos.
 
@@ -23,8 +23,7 @@ Pacotes utilizados no desenvolvimento do back-end:
 - Nodemon para hot-reload no ambiente dev
 - Express para fornecer APIs
 - Express-Validator para validação de requests
-- Sequelize para gerenciar o banco de dados
-- Sequelize-Cli para gerenciar models e migrations
+- Sequelize e Sequelize-Cli para gerenciar o banco de dados (models e migrations)
 - Jest para testes
 - Axios para teste das APIs
 - MariaDB 11.x, versão LTS mais atual no momento
