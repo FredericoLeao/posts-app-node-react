@@ -16,7 +16,7 @@ exports.loginDefault = async () => {
         email: 'email@exemplo.com',
         password: 'abc123',
     }
-    const responseLogin = await axios.post('http://localhost:8000/login',loginData)
+    const responseLogin = await axios.post('http://localhost:8000/api/login',loginData)
     return responseLogin.data.token
 }
 
@@ -36,6 +36,6 @@ exports.loginUser2 = async () => {
         email: 'joaodois@exemplo.com',
         password: 'abc123',
     }
-    const responseLogin = await axios.post('http://localhost:8000/login',loginData)
+    const responseLogin = await axios.post('http://localhost:8000/api/login',loginData)
     return responseLogin.data.token
 }

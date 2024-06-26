@@ -19,7 +19,7 @@ app.get('/status', (req, res) => {
     res.send(status);
 });
 
-app.post('/login', AuthController.validate('login'), AuthController.login);
+app.post('/api/login', AuthController.validate('login'), AuthController.login);
 
 // - user routes
 app.post(

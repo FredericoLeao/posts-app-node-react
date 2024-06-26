@@ -7,7 +7,7 @@ test('falha user login - email inválido', async () => {
     }
     const response = await axios
         .post(
-            'http://localhost:8000/login',
+            'http://localhost:8000/api/login',
             loginData
         )
         .then((res) => {
@@ -25,7 +25,7 @@ test('falha user login - senha errada', async () => {
     }
     const response = await axios
         .post(
-            'http://localhost:8000/login',
+            'http://localhost:8000/api/login',
             loginData
         )
         .then((res) => {
@@ -43,7 +43,7 @@ test('falha user login - usuario nao existe', async () => {
     }
     const response = await axios
         .post(
-            'http://localhost:8000/login',
+            'http://localhost:8000/api/login',
             loginData
         )
         .then((res) => {
@@ -61,7 +61,7 @@ test('user login ok', async () => {
     }
     const response = await axios
         .post(
-            'http://localhost:8000/login',
+            'http://localhost:8000/api/login',
             loginData
         )
         .then((res) => {
@@ -87,7 +87,7 @@ test('acesso rota restrita com token - válido', async () => {
         email: 'email@exemplo.com',
         password: 'abc123',
     }
-    const responseLogin = await axios.post('http://localhost:8000/login',loginData)
+    const responseLogin = await axios.post('http://localhost:8000/api/login',loginData)
 
     let token = responseLogin.data.token
     const response = await axios

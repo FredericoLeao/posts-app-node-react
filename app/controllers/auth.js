@@ -7,7 +7,7 @@ exports.validate = (method) => {
             return [
                 body('email', 'O campo E-Mail é obrigatório').exists(),
                 body('email', 'E-Mail inválido').isEmail(),
-                body('password', 'O campo Senha é obrigatório').exists(),
+                body('password', 'O campo Senha é obrigatório').exists().isLength({ min: 1 }),
             ]
         }
     }
@@ -29,7 +29,9 @@ exports.login = async (req, res, next) => {
             password: password,
         });
         if (login.error) {
-            return res.status(login.errorStatus).json(login.error)
+            return res.status(login.errorStatus).json(
+                { message: login.error }
+            );
         }
         return res.json(login);
     } catch (err) {

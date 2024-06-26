@@ -29,7 +29,7 @@ test('falha alterar dados do próprio perfil - senha errada', async () => {
         email: 'email@exemplo.com',
         password: 'abc123',
     }
-    const responseLogin = await axios.post('http://localhost:8000/login',loginData)
+    const responseLogin = await axios.post('http://localhost:8000/api/login',loginData)
     let token = responseLogin.data.token
     let profileDataUpdate = {
         name: 'João Atualizado',
@@ -60,7 +60,7 @@ test('alterar dados do próprio perfil - sem senha', async () => {
         email: 'email@exemplo.com',
         password: 'abc123',
     }
-    const responseLogin = await axios.post('http://localhost:8000/login',loginData)
+    const responseLogin = await axios.post('http://localhost:8000/api/login',loginData)
     let token = responseLogin.data.token
     let profileDataUpdate = {
         name: 'João Atualizado De Novo',
