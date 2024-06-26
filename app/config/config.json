@@ -5,7 +5,7 @@
     "database": "posts-app-db",
     "username": "posts-app-user",
     "password": "posts-app-pass",
-    "dialect": "mariadb"
+    "dialect": "mysql"
   },
   "test": {
     "host": "db",
@@ -13,7 +13,7 @@
     "database": "posts-app-db-test",
     "username": "posts-app-user",
     "password": "posts-app-pass",
-    "dialect": "mariadb"
+    "dialect": "mysql"
   },
   "production": {
     "host": "db",
@@ -21,6 +21,6 @@
     "database": "posts-app-db",
     "username": "posts-app-user",
     "password": "posts-app-pass",
-    "dialect": "mariadb"
+    "dialect": "mysql"
   }
 }
