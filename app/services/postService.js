@@ -1,5 +1,6 @@
 const Post = require('../models/post');
 const PostRevision = require('../models/postrevision');
+const PostCommentService = require('./postCommentService');
 const db = require('../infra/database');
 const fs = require('node:fs')
 const ft = require("file-type")
@@ -110,4 +111,20 @@ exports.dislike = async (postId) => {
     post.dislikeCount = post.dislikeCount+1;
     await post.save();
     return post;
+}
+
+exports.report = async () => {
+    const posts = await Post(db).findAll();
+    return Promise.all(posts.map(async (p) => {
+            const _p = await p.get();
+            const postRevision = await _p.lastRevision;
+            const postComments = await PostCommentService.getByPost(p.id);
+            return {
+                ..._p,
+                title: postRevision.title,
+                content: postRevision.content,
+                commentCount: postComments.length,
+            }
+        })
+    );
 }

@@ -59,6 +59,10 @@ exports.delete = async (deleteData) => {
     return { success: true }
 }
 
+exports.getByPost = async (postId) => {
+    return await PostComment(db).findAll({ where: { postId: postId }});
+}
+
 exports.sendNewPostCommentEmail = async (postComment) => {
     const post = await Post(db).findByPk(postComment.postId);
     if (!post) {

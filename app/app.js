@@ -7,6 +7,7 @@ const AuthController = require('./controllers/auth')
 const UserController = require('./controllers/user')
 const PostController = require('./controllers/post')
 const PostCommentController = require('./controllers/postComment')
+const ReportController = require('./controllers/report')
 
 // routes
 app.get('/status', (req, res) => {
@@ -26,6 +27,8 @@ app.post(
 );
 
 app.get('/api/post/:postId/read', PostController.getRead);
+
+app.get('/api/report/posts', ReportController.postsReport);
 
 // authenticated routes
 const authMiddleware = require('./middleware/auth');

@@ -208,3 +208,49 @@ test('post dislike count', async () => {
         .get(`http://localhost:8000/api/post/${postResponse.data.id}/read`)
     expect(postRead.data.dislikeCount).toBe(2);
 });
+
+test('posts report', async () => {
+    const createUser = await userTestUtils.createDefault();
+    const token = await userTestUtils.loginDefault();
+
+    let createPostData = {
+        content: 'Conteúdo de teste',
+        title: 'Post teste',
+    }
+    const postResponse = await axios
+        .post(
+            'http://localhost:8000/api/post',
+            createPostData,
+            { headers: { Authorization: token } },
+        );
+    const createPostCommentData = {
+        comment: 'Comentário no próprio post'
+    }
+    commentResponse = await axios
+        .post(
+            `http://localhost:8000/api/post/${postResponse.data.id}/comment`,
+            createPostCommentData,
+            { headers: { Authorization: token } },
+        );
+    commentResponse = await axios
+        .post(
+            `http://localhost:8000/api/post/${postResponse.data.id}/comment`,
+            createPostCommentData,
+            { headers: { Authorization: token } },
+        );
+    commentResponse = await axios
+        .post(
+            `http://localhost:8000/api/post/${postResponse.data.id}/comment`,
+            createPostCommentData,
+            { headers: { Authorization: token } },
+        );
+    let postReport = await axios
+        .get('http://localhost:8000/api/report/posts')
+    expect(postReport.data.filter(p => p.commentCount > 0).length).toBeGreaterThan(0);
+    expect(Object.keys(postReport.data[0])).toContain('title');
+    expect(Object.keys(postReport.data[0])).toContain('content');
+    expect(Object.keys(postReport.data[0])).toContain('viewCount');
+    expect(Object.keys(postReport.data[0])).toContain('likeCount');
+    expect(Object.keys(postReport.data[0])).toContain('dislikeCount');
+    expect(Object.keys(postReport.data[0])).toContain('commentCount');
+})
