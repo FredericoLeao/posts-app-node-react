@@ -1,67 +1,41 @@
-import { componentDidMount, useEffect, useState } from "react"
-import axios from "axios"
+import { useEffect, useState } from "react"
+import { useUser } from '../Entities/User'
 
-export default function SignUpPage () {
-    const [myProfileData, setMyProfileData] = useState({})
-    const [httpLoading, setHttpLoading] = useState(false)
-    const [formSuccess, setFormSuccess] = useState(false)
-    const [formError, setFormError] = useState('');
+export default function MyProfilePage () {
     const [name, setName] = useState('')
-    const [password, setPassword] = useState('')
+    const [changePassword, setChangePassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
 
+    const User = useUser()
+
     useEffect(() => {
-        setHttpLoading(true)
-        axios
-            .get(
-                'http://localhost:8000/api/profile',
-                { headers: { Authorization: sessionStorage.getItem('postsapp-login-token') } }
-            )
-            .then((res) => {
-                setMyProfileData(res.data)
-                setName(res.data.name)
-            })
-            .catch((res) => {
-              console.log('erro ??')
-              console.log(res.response?.data)
-              setMyProfileData({ error: true })
-            })
-            .finally(() => setHttpLoading(false))
+        User.getMyProfileData()
     }, []);
 
+    useEffect(() => {
+        if (User.myProfileData?.name)
+            setName(User.myProfileData.name)
+        setChangePassword('')
+    }, [User.myProfileData])
+
     const submit = () => {
-        axios
-            .put(
-                'http://localhost:8000/api/profile',
-                {
-                    name: name,
-                    password: password,
-                    confirmPassword: confirmPassword,
-                },
-                { headers: { Authorization: sessionStorage.getItem('postsapp-login-token') } }
-            )
-            .then((res) => {
-                setFormSuccess(true)
-                setFormError('')
-            })
-            .catch((err) => {
-                setFormSuccess(false)
-                if (err.response?.data?.errors)
-                    setFormError(err.response.data.errors[0].msg)
-                else if (err.response?.data?.message)
-                    setFormError(err.response.data.message)
-            })
+        let updateProfileData = {
+            name: name,
+            password: changePassword,
+            confirmPassword: confirmPassword,
+        }
+        User.updateMyProfileData(updateProfileData)
     }
     const FormError = () => {
-        if (formError != '')
+        if (User.updateMyProfileErrorMessage != '')
             return (
-                <div className="alert alert-danger my-2">{formError}</div>
+                <div className="alert alert-danger my-2">{User.updateMyProfileErrorMessage}</div>
             )
     }
     const FormSuccess = () => {
-        if (formSuccess === true)
+        if (User.updateMyProfileSuccess === true)
             return (
-                <div className="alert alert-success my-2">Atualizado!</div>
+                <div className="alert alert-success my-2">Dados Atualizados!</div>
             )
     }
 
@@ -74,8 +48,8 @@ export default function SignUpPage () {
                 </div>
                 <form>
                 <div className="row mb-3">
-                    <div class="border-bottom">
-                    {myProfileData.email}
+                    <div className="border-bottom">
+                    {User.myProfileData.email}
                     </div>
                 </div>
                 <div className="row mb-1">
@@ -92,18 +66,21 @@ export default function SignUpPage () {
                 </div>
                 <div className="row my-1">
                     <div className="">
-                    <label>Senha:</label>
+                    <label>Alterar Senha:</label>
                     <input
+                        id="changePassword"
+                        name="changePassword"
                         type="password"
                         className="form-control"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        autoComplete="off"
+                        value={changePassword}
+                        onChange={(e) => setChangePassword(e.target.value)}
                     />
                     </div>
                 </div>
                 <div className="row my-1">
                     <div className="">
-                    <label>Confirme a senha:</label>
+                    <label>Confirme a nova senha:</label>
                     <input
                         type="password"
                         className="form-control"

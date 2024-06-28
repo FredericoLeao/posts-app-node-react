@@ -1,6 +1,6 @@
 import { useState } from "react"
-import axios from "axios"
 import { useNavigate } from "react-router-dom"
+import { useUser } from "../Entities/User"
 
 export default function LoginPage () {
     const [email, setEmail] = useState('')
@@ -10,36 +10,27 @@ export default function LoginPage () {
 
     const navigate = useNavigate()
 
-    const submit = () => {
+    const User = useUser()
+
+    const submit = async () => {
         const loginData = {
             email: email,
             password: password,
         }
-        axios.post('http://localhost:8000/api/login', loginData)
-            .then(async (res) => {
-                setFormError('')
-                setLoginSuccess(true)
-                sessionStorage.setItem('postsapp-login-token', res.data.token);
-                navigate('/meus-dados')
-            })
-            .catch((err) => {
-                setLoginSuccess(false)
-                if (err.response?.data?.errors)
-                    setFormError(err.response.data.errors[0].msg)
-                else if (err.response?.data?.message)
-                    setFormError(err.response.data.message)
-                else setFormError('Erro de login')
-            });
+        const login = await User.login(loginData)
+        if (User.loginSuccess) {
+            setTimeout(() => navigate('/meus-dados'), 320)
+        }
     }
 
-    const FormError = () => {
-        if (formError != '')
+    const LoginError = () => {
+        if (User.loginErrorMessage != '')
             return (
-                <div className="alert alert-danger my-2">{formError}</div>
+                <div className="alert alert-danger my-2">{User.loginErrorMessage}</div>
             )
     }
     const LoginSuccess = () => {
-        if (loginSuccess === true)
+        if (User.loginSuccess === true)
             return (
                 <div className="alert alert-success my-2">Login efetuado!</div>
             )
@@ -48,7 +39,7 @@ export default function LoginPage () {
     return (
             <div className="signup">
                 <div className="head">
-                    <FormError />
+                    <LoginError />
                     <LoginSuccess />
                 </div>
                 <form>
