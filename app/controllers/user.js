@@ -21,6 +21,7 @@ exports.validate = (method) => {
         case 'updateProfile': {
             return [
                 body('name', 'O campo Nome é obrigatório').exists(),
+                body('name', 'O campo Nome deve ter ao menos 3 caracteres').isLength({ min: 3}),
                 body('password', 'Senha não confere')
                     .custom((value, { req }) => {
                         if (!(value?.length > 0))
