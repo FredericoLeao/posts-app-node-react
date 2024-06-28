@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Link } from "react-router-dom"
 import SignUpPage from './Pages/Signup'
 import LoginPage from './Pages/Login'
-import HomePage from './Pages/Home'
 import MyProfilePage from './Pages/MyProfile'
 import MyPostsPage from './Pages/MyPosts'
 import { useUser } from './Entities/User'
@@ -65,7 +64,7 @@ const LoginRequiredRoutes = () => {
 function App() {
   // const User = useUser()
   // useEffect(() => {
-  // //   User.getMyProfileData()
+  //   User.getMyProfileData()
   // }, [User.isLogguedIn()])
   return (
     <div className="container">
@@ -76,10 +75,6 @@ function App() {
                 <HomeMenu />
             </div>
           <Routes>
-            <Route
-              path='/'
-              element={<HomePage />}
-            />
             <Route
               path='/cadastro'
               element={<SignUpPage />}
