@@ -1,6 +1,7 @@
 import { useState } from "react"
 import axios from "axios"
 import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 export default function SignUpPage () {
     const [name, setName] = useState('')
@@ -9,6 +10,8 @@ export default function SignUpPage () {
     const [confirmPassword, setConfirmPassword] = useState('')
     const [signupSuccess, setSigupSuccess] = useState(false)
     const [formError, setFormError] = useState('');
+
+    const navigate = useNavigate()
 
     const submit = () => {
         const postData = {
@@ -41,12 +44,14 @@ export default function SignUpPage () {
             )
     }
     const SignupSuccess = () => {
-        if (signupSuccess === true)
+        if (signupSuccess === true) {
+            setTimeout(() => navigate('/login'), 620)
             return (
                 <div className="alert alert-success my-2">
-                    Cadastro efetuado! Vá para o <Link to="/login">login</Link>
+                    Cadastro efetuado! Redirecionando para o <Link to="/login">login</Link>...
                 </div>
             )
+        }
     }
 
     return (
@@ -58,7 +63,7 @@ export default function SignUpPage () {
                 <form>
                 <div className="row mb-1">
                     <div>
-                        <label for="name">Nome:</label>
+                        <label>Nome:</label>
                         <input
                             id="name"
                             type="text"

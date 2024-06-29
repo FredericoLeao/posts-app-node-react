@@ -30,9 +30,7 @@ export function useUser () {
                 setMyProfileData(res.data)
             })
             .catch((res) => {
-              console.log('erro ??')
-              console.log(res.response.data)
-              setMyProfileData({ error: true })
+              setMyProfileData({})
             })
         return
     }

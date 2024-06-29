@@ -1,6 +1,11 @@
+import { useEffect } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Link } from "react-router-dom"
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+} from "react-router-dom";
 import SignUpPage from './Pages/Signup'
 import LoginPage from './Pages/Login'
 import MyProfilePage from './Pages/MyProfile'
@@ -20,7 +25,7 @@ const LoginInfo = () => {
   }
 }
 
-const HomeMenu = () => {
+const HomeMenu = ({ onLoginStatus }) => {
   const User = useUser();
   if (User.isLogguedIn() === true) {
       return (
@@ -35,6 +40,7 @@ const HomeMenu = () => {
                   <a href='#' onClick={(e) => {
                     e.preventDefault();
                     User.logout()
+                    onLoginStatus(false)
                   }}> Sair </a>
               </div>
           </div>
@@ -42,10 +48,11 @@ const HomeMenu = () => {
   }
 }
 
-const LoginRequiredRoutes = () => {
-  const User = useUser();
+export default function App() {
+  const User = useUser()
+
   if (User.isLogguedIn() === true)
-    return (
+    var loginRequiredRoutes = 
       <Routes>
         <Route
           path='/meus-dados'
@@ -56,23 +63,15 @@ const LoginRequiredRoutes = () => {
           element={<MyPostsPage />}
         />
       </Routes>
-    )
-  else
-    return <RestrictedAreaWarning />
-}
 
-function App() {
-  // const User = useUser()
-  // useEffect(() => {
-  //   User.getMyProfileData()
-  // }, [User.isLogguedIn()])
   return (
     <div className="container">
       <div className="d-flex w-100 h-100 flex-column align-items-center">
+        <RestrictedAreaWarning userLoguedIn={User.isLogguedIn()} />
         <Router>
           <LoginInfo />
           <div className="nav">
-                <HomeMenu />
+                <HomeMenu onLoginStatus={() => User.getMyProfileData()}/>
             </div>
           <Routes>
             <Route
@@ -81,14 +80,13 @@ function App() {
             />
             <Route
               path='/login'
-              element={<LoginPage />}
+              element={<LoginPage onLoginStatus={() => User.getMyProfileData()}/>}
             />
           </Routes>
-          <LoginRequiredRoutes />
+          {loginRequiredRoutes}
         </Router>
       </div>
     </div>
   );
 }
 
-export default App;
