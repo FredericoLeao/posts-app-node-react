@@ -13,7 +13,7 @@
 
 - Obs: Foi dada uma ênfase maior na aplicação do back-end, sendo desenvolvido todos os recursos sugeridos no escopo do projeto, aplicando conceitos de arquitetura e testes automatizados com cobertura de quase 100%. O funcionamento dos recursos pode ser conferido nos testes em "/app/tests".
 
-- Obs front-end: Apenas algumas páginas foram desenvolvidas, para ser possível aplicar os recursos desenvolvidos no back-end. (Contém algumas falhas, e não contém todos os recursos, não foi possível finalizar a tempo). O cadastro, login, e posts estão funcionando, mas podem precisar de um "F5" em alguns momentos.
+- Obs front-end: Apenas algumas páginas foram desenvolvidas, para ser possível aplicar os recursos desenvolvidos no back-end.
 
 # Stack utilizada
 
