@@ -12,20 +12,21 @@ export default function LoginPage ({ onLoginStatus }) {
 
     const User = useUser()
 
-    const submit = async () => {
+    const submit = () => {
         const loginData = {
             email: email,
             password: password,
         }
-        const login = await User.login(loginData)
-        if (User.loginSuccess) {
+
+        const login = User.login(loginData)
+        login.then((res) => {
             onLoginStatus(true)
             setTimeout(() => navigate('/meus-dados'), 820)
-            return true
-        }
-        onLoginStatus(false)
-        navigate('/')
-        return false
+        })
+        .catch((err) => {
+            onLoginStatus(false)
+            navigate('/')
+        })
     }
 
     const LoginError = () => {

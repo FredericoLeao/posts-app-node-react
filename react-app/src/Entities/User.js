@@ -4,7 +4,7 @@ import axios from "axios"
 export function useUser () {
     const [myProfileData, setMyProfileData] = useState({})
     const [loginErrorMessage, setLoginErrorMessage] = useState('')
-    const [loginSuccess, setLoginSuccess] = useState({})
+    const [loginSuccess, setLoginSuccess] = useState(false)
     const [updateMyProfileErrorMessage, setUpdateMyProfileErrorMessage] = useState('')
     const [updateMyProfileSuccess, setUpdateMyProfileSuccess] = useState({})
 
@@ -12,7 +12,7 @@ export function useUser () {
         return sessionStorage.getItem('postsapp-login-token')
     }
 
-    const isLogguedIn = () => {
+    const isLoguedIn = () => {
         let token = getToken()
         if(token && token !== null) {
           return true
@@ -36,8 +36,9 @@ export function useUser () {
     }
 
     const login = async (loginData) => {
+        setLoginSuccess(false)
         return await axios.post('http://localhost:8000/api/login', loginData)
-            .then(async (res) => {
+            .then((res) => {
                 setLoginErrorMessage('')
                 setLoginSuccess(true)
                 sessionStorage.setItem('postsapp-login-token', res.data.token);
@@ -81,7 +82,7 @@ export function useUser () {
     return {
         getMyProfileData,
         getToken,
-        isLogguedIn,
+        isLoguedIn,
         login,
         loginErrorMessage,
         loginSuccess,
