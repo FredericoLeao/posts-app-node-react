@@ -13,10 +13,12 @@ import MyPostsPage from './Pages/MyPosts'
 import HomePage from './Pages/Home';
 import { useUser } from './Entities/User'
 import RestrictedAreaWarning from './SharedComponents/RestrictedAreaWarning';
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsLoguedIn } from './Store/authUserSlice';
 
 const LoginInfo = () => {
-  const User = useUser();
-  if (User.isLoguedIn() !== true) {
+  const authUser = useSelector((state) => state.authUser.value)
+  if (authUser.isLoguedIn !== true) {
     return (
       <div>
         Você não está logado! Faça o login <Link to="/login"> Login </Link>
@@ -28,7 +30,10 @@ const LoginInfo = () => {
 
 const HomeMenu = ({ onLoginStatus }) => {
   const User = useUser();
-  if (User.isLoguedIn() === true) {
+  const authUser = useSelector((state) => state.authUser.value)
+  const dispatch = useDispatch()
+
+  if (authUser.isLoguedIn === true) {
       return (
           <div className="d-flex p-2">
               <div className="d-flex mx-2 border-bottom">
@@ -41,7 +46,6 @@ const HomeMenu = ({ onLoginStatus }) => {
                   <a href='#' onClick={(e) => {
                     e.preventDefault();
                     User.logout()
-                    onLoginStatus(false)
                   }}> Sair </a>
               </div>
           </div>
@@ -51,8 +55,10 @@ const HomeMenu = ({ onLoginStatus }) => {
 
 export default function App() {
   const User = useUser()
+  const authUser = useSelector((state) => state.authUser.value)
+  useEffect(() => { User.getMyProfileData() }, [])
 
-  if (User.isLoguedIn() === true)
+  if (authUser.isLoguedIn === true)
     var loginRequiredRoutes = 
       <Routes>
         <Route
@@ -68,7 +74,7 @@ export default function App() {
   return (
     <div className="container">
       <div className="d-flex w-100 h-100 flex-column align-items-center">
-        <RestrictedAreaWarning userLoguedIn={User.isLoguedIn()} />
+        <RestrictedAreaWarning userLoguedIn={authUser.isLoguedIn} />
         <Router>
           <LoginInfo />
           <div className="nav">

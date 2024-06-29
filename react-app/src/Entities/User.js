@@ -1,5 +1,7 @@
 import { useState } from "react"
 import axios from "axios"
+import { useDispatch } from "react-redux"
+import { setIsLoguedIn } from "../Store/authUserSlice"
 
 export function useUser () {
     const [myProfileData, setMyProfileData] = useState({})
@@ -8,6 +10,8 @@ export function useUser () {
     const [updateMyProfileErrorMessage, setUpdateMyProfileErrorMessage] = useState('')
     const [updateMyProfileSuccess, setUpdateMyProfileSuccess] = useState({})
 
+    const dispatch = useDispatch()
+
     const getToken = () => {
         return sessionStorage.getItem('postsapp-login-token')
     }
@@ -15,12 +19,16 @@ export function useUser () {
     const isLoguedIn = () => {
         let token = getToken()
         if(token && token !== null) {
-          return true
+            dispatch(setIsLoguedIn(true))
+            return true
         }
+        dispatch(setIsLoguedIn(false))
         return false
     }
 
     const getMyProfileData = async () => {
+        isLoguedIn()
+
         return await axios
             .get(
                 'http://localhost:8000/api/profile',
@@ -42,9 +50,11 @@ export function useUser () {
                 setLoginErrorMessage('')
                 setLoginSuccess(true)
                 sessionStorage.setItem('postsapp-login-token', res.data.token);
+                dispatch(setIsLoguedIn(true))
             })
             .catch((err) => {
                 setLoginSuccess(false)
+                dispatch(setIsLoguedIn(false))
                 if (err.response?.data?.errors)
                     setLoginErrorMessage(err.response.data.errors[0].msg)
                 else if (err.response?.data?.message)
@@ -76,6 +86,7 @@ export function useUser () {
 
     const logout = () => {
         sessionStorage.removeItem('postsapp-login-token')
+        dispatch(setIsLoguedIn(false))
         return;
     }
 
