@@ -13,6 +13,10 @@ export default function SignUpPage () {
     const [confirmPassword, setConfirmPassword] = useState('')
 
     useEffect(() => {
+        getMyPosts()
+    }, []);
+
+    const getMyPosts = () => {
         setHttpLoading(true)
         axios
             .get(
@@ -23,17 +27,13 @@ export default function SignUpPage () {
                 setMyPosts(res.data)
             })
             .catch((res) => {
-              console.log('erro ??')
-              console.log(res.response?.data)
-              setMyProfileData({ error: true })
+              setMyPosts([])
             })
             .finally(() => setHttpLoading(false))
-
-    }, []);
+    }
 
     const submit = (e) => {
         e.preventDefault();
-        console.log('oi??')
         axios
             .post(
                 'http://localhost:8000/api/post',
@@ -46,6 +46,7 @@ export default function SignUpPage () {
             .then((res) => {
                 setFormSuccess(true)
                 setFormError('')
+                getMyPosts()
             })
             .catch((err) => {
                 setFormSuccess(false)
