@@ -7,8 +7,12 @@ const axiosClient = axios.create({
 axiosClient.interceptors.response.use(
     (res) => { return res },
     (err) => {
-        if (err.response?.status === 401) {
-            window.location.href = '/'
+        if (
+            err.response?.status === 401 &&
+            window.location.pathname.substring(0, 6) !== '/login'
+        ) {
+            sessionStorage.removeItem('postsapp-login-token')
+            window.location.href = '/login'
         }
         return err
     }
