@@ -5,8 +5,8 @@ exports.validate = (method) => {
     switch (method) {
         case 'createPost': {
             return [
+                body('title', 'O campo Título é obrigatório').exists().isLength({ min: 2 }),
                 body('content', 'O campo Conteúdo é obrigatório').exists().isLength({ min: 3}),
-                body('title', 'O campo E-Mail é obrigatório').exists().isLength({ min: 2 }),
             ]
         }
     }
