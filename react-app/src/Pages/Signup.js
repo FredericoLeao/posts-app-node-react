@@ -1,5 +1,5 @@
 import { useState } from "react"
-import axios from "axios"
+import axiosApi from "../Plugins/axios"
 import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 
@@ -20,7 +20,7 @@ export default function SignUpPage () {
             password: password,
             confirmPassword: confirmPassword,
         }
-        axios.post('http://localhost:8000/user/signup', postData)
+        axiosApi.post('/signup', postData)
             .then((res) => {
                 console.log('ok!')
                 console.log(res.data)

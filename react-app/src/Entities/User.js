@@ -1,5 +1,5 @@
 import { useState } from "react"
-import axios from "axios"
+import axiosApi from "../Plugins/axios"
 import { useDispatch } from "react-redux"
 import { setIsLoguedIn } from "../Store/authUserSlice"
 
@@ -29,9 +29,9 @@ export function useUser () {
     const getMyProfileData = async () => {
         isLoguedIn()
 
-        return await axios
+        return await axiosApi
             .get(
-                'http://localhost:8000/api/profile',
+                '/profile',
                 { headers: { Authorization: sessionStorage.getItem('postsapp-login-token') } }
             )
             .then((res) => {
@@ -45,7 +45,7 @@ export function useUser () {
 
     const login = async (loginData) => {
         setLoginSuccess(false)
-        return await axios.post('http://localhost:8000/api/login', loginData)
+        return await axiosApi.post('/login', loginData)
             .then((res) => {
                 setLoginErrorMessage('')
                 setLoginSuccess(true)
@@ -66,9 +66,9 @@ export function useUser () {
     }
 
     const updateMyProfileData = async (updateProfileData) => {
-        return await axios
+        return await axiosApi
             .put(
-                'http://localhost:8000/api/profile',
+                '/profile',
                 updateProfileData,
                 { headers: { Authorization: getToken() } }
             )

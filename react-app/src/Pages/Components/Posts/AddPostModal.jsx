@@ -1,6 +1,6 @@
 import { useState } from "react"
 import AppModal from '../../../SharedComponents/AppModal'
-import axios from "axios"
+import axiosApi from "../../../Plugins/axios"
 
 export default function AddPostModal ({ show, onSuccess = () => {}, onClosed = () => {} }) {
     const [postForm, setPostForm] = useState({})
@@ -9,9 +9,9 @@ export default function AddPostModal ({ show, onSuccess = () => {}, onClosed = (
 
     const submit = (e) => {
         e.preventDefault();
-        axios
+        axiosApi
             .post(
-                'http://localhost:8000/api/post',
+                '/post',
                 {
                     title: postForm.title,
                     content: postForm.content,

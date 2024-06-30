@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import axios from "axios"
+import axiosApi from "../Plugins/axios"
 import AddPostModal from "./Components/Posts/AddPostModal"
 import PostRow from "./Components/Posts/PostRow"
 
@@ -14,9 +14,9 @@ export default function MyPosts () {
 
     const getMyPosts = () => {
         setHttpLoading(true)
-        axios
+        axiosApi
             .get(
-                'http://localhost:8000/api/my-posts',
+                '/my-posts',
                 { headers: { Authorization: sessionStorage.getItem('postsapp-login-token') } }
             )
             .then((res) => {
