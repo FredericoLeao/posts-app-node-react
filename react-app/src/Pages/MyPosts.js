@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
-import AddPostModal from "./Components/AddPostModal"
+import AddPostModal from "./Components/Posts/AddPostModal"
+import PostRow from "./Components/Posts/PostRow"
 
 export default function MyPosts () {
     const [myPosts, setMyPosts] = useState([])
@@ -32,21 +33,13 @@ export default function MyPosts () {
         myPosts.forEach((p) => { rows.push(<PostRow post={{...p}} key={p.id} />) })
         return rows;
     }
-    const PostRow = ({ post }) => {
-        return <div className="row">
-            <div className="col-6">
-                {post.title}
-            </div>
-            <div className="col-6">
-                {post.content}
-            </div>
-        </div>
-    }
 
     return (
             <div className="myPosts">
-                <div>
-                    <button onClick={() => { setShowModalAddPost(true)}}>Adicionar Post</button>
+                <div className="text-end">
+                    <button
+                        className="btn btn-primary"
+                        onClick={() => { setShowModalAddPost(true)}}>Adicionar Post</button>
                 </div>
                 <div>
                     <AddPostModal
@@ -55,15 +48,10 @@ export default function MyPosts () {
                         onSuccess={() => getMyPosts()}
                     />
                 </div>
-                <div className="row mb-1 text-center">
-                    <div className="col-6">
-                        <label>Título</label>
-                    </div>
-                    <div className="col-6">
-                        <label>Conteúdo</label>
-                    </div>
+                
+                <div className="mt-3">
+                    <PostsList />
                 </div>
-                <PostsList />
             </div>
     )
 }

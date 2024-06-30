@@ -1,5 +1,5 @@
 import { useState } from "react"
-import AppModal from '../../SharedComponents/AppModal'
+import AppModal from '../../../SharedComponents/AppModal'
 import axios from "axios"
 
 export default function AddPostModal ({ show, onSuccess = () => {}, onClosed = () => {} }) {

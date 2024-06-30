@@ -130,7 +130,10 @@ exports.report = async () => {
 }
 
 exports.getByUser = async (userId) => {
-    const posts = await Post(db).findAll({ where: { userId: userId } });
+    const posts = await Post(db).findAll({
+        where: { userId: userId },
+        order: [ ['createdAt', 'DESC'] ],
+    });
     return Promise.all(posts.map(async (p) => {
         const _p = await p.get();
         const postRevision = await _p.lastRevision;
