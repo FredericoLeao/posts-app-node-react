@@ -13,8 +13,7 @@ import MyPostsPage from './Pages/MyPosts'
 import HomePage from './Pages/Home';
 import { useUser } from './Entities/User'
 import RestrictedAreaWarning from './SharedComponents/RestrictedAreaWarning';
-import { useDispatch, useSelector } from 'react-redux';
-import { setIsLoguedIn } from './Store/authUserSlice';
+import { useSelector } from 'react-redux';
 
 const LoginInfo = () => {
   const authUser = useSelector((state) => state.authUser.value)
@@ -28,10 +27,9 @@ const LoginInfo = () => {
   }
 }
 
-const HomeMenu = ({ onLoginStatus }) => {
+const HomeMenu = () => {
   const User = useUser();
   const authUser = useSelector((state) => state.authUser.value)
-  const dispatch = useDispatch()
 
   if (authUser.isLoguedIn === true) {
       return (
@@ -78,7 +76,7 @@ export default function App() {
         <Router>
           <LoginInfo />
           <div className="nav">
-                <HomeMenu onLoginStatus={() => User.getMyProfileData()}/>
+                <HomeMenu />
             </div>
           <Routes>
             <Route
@@ -87,7 +85,7 @@ export default function App() {
             />
             <Route
               path='/login'
-              element={<LoginPage onLoginStatus={() => User.getMyProfileData()}/>}
+              element={<LoginPage />}
             />
             <Route
               path='/'

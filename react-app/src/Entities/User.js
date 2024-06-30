@@ -51,6 +51,7 @@ export function useUser () {
                 setLoginSuccess(true)
                 sessionStorage.setItem('postsapp-login-token', res.data.token);
                 dispatch(setIsLoguedIn(true))
+                return res
             })
             .catch((err) => {
                 setLoginSuccess(false)

@@ -2,31 +2,26 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useUser } from "../Entities/User"
 
-export default function LoginPage ({ onLoginStatus }) {
+export default function LoginPage () {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [loginSuccess, setLoginSuccess] = useState(false)
-    const [formError, setFormError] = useState('')
 
     const navigate = useNavigate()
 
     const User = useUser()
 
-    const submit = () => {
+    const submit = async () => {
         const loginData = {
             email: email,
             password: password,
         }
 
-        const login = User.login(loginData)
-        login.then((res) => {
-            onLoginStatus(true)
-            setTimeout(() => navigate('/meus-dados'), 820)
-        })
-        .catch((err) => {
-            onLoginStatus(false)
-            navigate('/')
-        })
+        await User.login(loginData)
+            .then((res) => {
+                if (res.status === 200)
+                    setTimeout(() => navigate('/meus-dados'), 720)
+            })
+            .catch(() => {})
     }
 
     const LoginError = () => {
