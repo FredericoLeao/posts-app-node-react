@@ -36,7 +36,6 @@ export default function AddPostModal ({ show, onSuccess = () => {}, onClosed = (
         setFormSuccess(false)
         setFormError('')
         setPostForm({})
-
         onClosed(e)
     }
 
@@ -49,7 +48,7 @@ export default function AddPostModal ({ show, onSuccess = () => {}, onClosed = (
     const FormSuccess = () => {
         if (formSuccess === true)
             return (
-                <div className="alert alert-success my-2">Atualizado!</div>
+                <div className="alert alert-success my-2">Cadastrado com sucesso!</div>
             )
     }
 
@@ -57,9 +56,11 @@ export default function AddPostModal ({ show, onSuccess = () => {}, onClosed = (
         <AppModal
             show={show}
             title="Adicionar Post"
-            onOkBtn={(e) => submit(e)}
+            onOkBtn={(e) => { if (formSuccess !== true) submit(e) }}
             onClosed={close}
+            okButtonDismiss={formSuccess}
         >
+        {formSuccess === true ||
         <form>
         <div className="row my-1">
             <div className="">
@@ -87,14 +88,14 @@ export default function AddPostModal ({ show, onSuccess = () => {}, onClosed = (
                     )}
                 />
             </div>
-            <div className="row my-1">
-                <div>
-                    <FormSuccess />
-                    <FormError />
-                </div>
+        </div>
+        </form>}
+        <div className="row my-1">
+            <div>
+                <FormSuccess />
+                <FormError />
             </div>
         </div>
-        </form>
 
         </AppModal>
     )

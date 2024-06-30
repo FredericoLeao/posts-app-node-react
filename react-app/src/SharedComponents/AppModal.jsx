@@ -15,6 +15,7 @@ export default function AppModal (
     title,
     show=false,
     okButtonValue='OK',
+    okButtonDismiss=false,
     cancelButtonValue='Fechar',
     onOkBtn=() => {},
     onCancelBtn=() => {},
@@ -50,6 +51,7 @@ export default function AppModal (
               <button
                 type="button"
                 className="btn btn-primary"
+                data-bs-dismiss={okButtonDismiss === true ? 'modal' : ''}
                 onClick={onOkBtn}
               >{okButtonValue}</button>
             </div>
