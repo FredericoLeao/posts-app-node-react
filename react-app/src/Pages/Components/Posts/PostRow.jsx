@@ -9,7 +9,7 @@ const formatDateTime = (dateValue) => {
 
 export default function PostRow ({ post }) {
     return (
-        <div className="row g-0 my-3" style={{fontSize: '0.8rem' }}>
+        <div className="row g-0 mt-1 my-4" style={{fontSize: '0.8rem' }}>
             <div>
                 <div className="card">
                     <div className="card-header d-flex">

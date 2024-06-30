@@ -48,9 +48,10 @@ export default function MyPosts () {
                         onSuccess={() => getMyPosts()}
                     />
                 </div>
-                
-                <div className="mt-3" style={{maxHeight: '620px', overflow: 'auto'}}>
-                    <PostsList />
+                <div className="border p-4 mt-2">
+                    <div style={{maxHeight: '620px', overflow: 'auto'}}>
+                        <PostsList />
+                    </div>
                 </div>
             </div>
     )
