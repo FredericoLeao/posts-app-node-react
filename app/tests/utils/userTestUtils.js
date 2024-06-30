@@ -8,7 +8,7 @@ exports.createDefault = async () => {
         confirmPassword: 'abc123',
     }
     return await axios
-        .post('http://localhost:8000/user/signup', createUserData)
+        .post('http://localhost:8000/api/signup', createUserData)
 }
 
 exports.loginDefault = async () => {
@@ -28,7 +28,7 @@ exports.createUser2 = async () => {
         confirmPassword: 'abc123',
     }
     return await axios
-        .post('http://localhost:8000/user/signup', createUserData)
+        .post('http://localhost:8000/api/signup', createUserData)
 }
 
 exports.loginUser2 = async () => {

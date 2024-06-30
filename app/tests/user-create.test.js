@@ -10,7 +10,7 @@ test('create user - invalid email', async function () {
     }
     const response = await axios
         .post(
-            'http://localhost:8000/user/signup',
+            'http://localhost:8000/api/signup',
             createUserData
         )
         .then((res) => {
@@ -30,7 +30,7 @@ test('create user - invalid confirm password', async function () {
     }
     const response = await axios
         .post(
-            'http://localhost:8000/user/signup',
+            'http://localhost:8000/api/signup',
             createUserData
         )
         .then((res) => {

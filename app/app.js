@@ -23,7 +23,7 @@ app.post('/api/login', AuthController.validate('login'), AuthController.login);
 
 // - user routes
 app.post(
-    '/user/signup',
+    '/api/signup',
     UserController.validate('createUser'),
     UserController.createUser
 );
