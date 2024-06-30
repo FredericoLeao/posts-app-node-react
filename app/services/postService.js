@@ -140,6 +140,7 @@ exports.getByUser = async (userId) => {
         const postComments = await PostCommentService.getByPost(p.id);
         return {
             ..._p,
+            countRevision: await _p.countRevision,
             title: postRevision.title,
             content: postRevision.content,
             commentCount: postComments.length,

@@ -34,6 +34,12 @@ module.exports = (sequelize) => {
           });
       }
     },
+    countRevision: {
+      type: DataTypes.VIRTUAL,
+      async get() {
+        return await PostRevision(sequelize).count({ where: { postId: this.get('id')}})
+      }
+    }
   }, {
     sequelize,
     modelName: 'Post',

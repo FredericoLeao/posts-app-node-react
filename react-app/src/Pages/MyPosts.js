@@ -49,7 +49,7 @@ export default function MyPosts () {
                     />
                 </div>
                 
-                <div className="mt-3">
+                <div className="mt-3" style={{maxHeight: '620px', overflow: 'auto'}}>
                     <PostsList />
                 </div>
             </div>

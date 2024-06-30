@@ -9,15 +9,23 @@ const formatDateTime = (dateValue) => {
 
 export default function PostRow ({ post }) {
     return (
-        <div className="row g-0 my-2" style={{fontSize: '0.8rem' }}>
+        <div className="row g-0 my-3" style={{fontSize: '0.8rem' }}>
             <div>
                 <div className="card">
                     <div className="card-header d-flex">
                         <div><h6 className="mb-0">{post.title}</h6></div>
                         <div className="ms-auto">{formatDateTime(post.createdAt)}</div>
                     </div>
-                    <div className="card-body">
+                    <div className="card-body" style={{maxHeight: '180px', overflow: 'auto'}}>
                         {post.content}
+                    </div>
+                    <div className="card-footer">
+                        <span style={{fontSize: '0.63rem'}}>
+                            {post.countRevision > 1 &&
+                            <span>Editado {post.countRevision} vezes</span>}
+                            {post.countRevision === 1 &&
+                            <span>Sem edição</span>}
+                        </span>
                     </div>
                 </div>
             </div>
