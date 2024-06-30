@@ -2,7 +2,7 @@ import { useState } from "react"
 import AppModal from '../../SharedComponents/AppModal'
 import axios from "axios"
 
-export default function AddPostModal ({ show, onClosed = () => {} }) {
+export default function AddPostModal ({ show, onSuccess = () => {}, onClosed = () => {} }) {
     const [postForm, setPostForm] = useState({})
     const [formSuccess, setFormSuccess] = useState(false)
     const [formError, setFormError] = useState('');
@@ -21,7 +21,7 @@ export default function AddPostModal ({ show, onClosed = () => {} }) {
             .then((res) => {
                 setFormSuccess(true)
                 setFormError('')
-                //getMyPosts()
+                onSuccess()
             })
             .catch((err) => {
                 setFormSuccess(false)
@@ -30,6 +30,14 @@ export default function AddPostModal ({ show, onClosed = () => {} }) {
                 else if (err.response?.data?.message)
                     setFormError(err.response.data.message)
             })
+    }
+
+    const close = (e) => {
+        setFormSuccess(false)
+        setFormError('')
+        setPostForm({})
+
+        onClosed(e)
     }
 
     const FormError = () => {
@@ -50,10 +58,9 @@ export default function AddPostModal ({ show, onClosed = () => {} }) {
             show={show}
             title="Adicionar Post"
             onOkBtn={(e) => submit(e)}
-            onClosed={onClosed}
+            onClosed={close}
         >
         <form>
-
         <div className="row my-1">
             <div className="">
                 <label>Título:</label>
@@ -61,7 +68,7 @@ export default function AddPostModal ({ show, onClosed = () => {} }) {
                     id="email"
                     type="text"
                     className="form-control"
-                    value={postForm.title}
+                    value={postForm.title || ''}
                     onChange={(e) => setPostForm(
                         { ...postForm, title: e.target.value }
                     )}
@@ -74,14 +81,18 @@ export default function AddPostModal ({ show, onClosed = () => {} }) {
                 <textarea
                     id="email"
                     className="form-control"
-                    value={postForm.content}
+                    value={postForm.content || ''}
                     onChange={(e) => setPostForm(
                         { ...postForm, content: e.target.value }
                     )}
                 />
             </div>
-            </div>
             <div className="row my-1">
+                <div>
+                    <FormSuccess />
+                    <FormError />
+                </div>
+            </div>
         </div>
         </form>
 

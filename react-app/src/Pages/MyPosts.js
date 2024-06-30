@@ -52,6 +52,7 @@ export default function MyPosts () {
                     <AddPostModal
                         show={showModalAddPost}
                         onClosed={() => setShowModalAddPost(false)}
+                        onSuccess={() => getMyPosts()}
                     />
                 </div>
                 <div className="row mb-1 text-center">
