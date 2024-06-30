@@ -5,6 +5,7 @@ import {
   Routes,
   Route,
   Link,
+  useLocation,
 } from "react-router-dom";
 import SignUpPage from './Pages/Signup'
 import LoginPage from './Pages/Login'
@@ -20,34 +21,59 @@ const LoginInfo = () => {
   if (authUser.isLoguedIn !== true) {
     return (
       <div>
-        Você não está logado! Faça o login <Link to="/login"> Login </Link>
+        Você não está logado! Faça o <Link to="/login"> Login </Link>
         Ou <Link to="/cadastro">cadastre-se</Link>
       </div>
     )
   }
 }
 
+const menuItems = [
+  {
+    title: 'Meus Dados',
+    path: '/meus-dados',
+  },
+  {
+    title: 'Posts',
+    path: '/posts',
+  },
+]
 const HomeMenu = () => {
   const User = useUser();
   const authUser = useSelector((state) => state.authUser.value)
+  const location = useLocation()
+
+  const isCurrentRoute = (path) => {
+    console.log(location.pathname)
+    if (path === location.pathname)
+      return true
+    return false
+  }
 
   if (authUser.isLoguedIn === true) {
-      return (
-          <div className="d-flex p-2">
-              <div className="d-flex mx-2 border-bottom">
-                  <Link to="/meus-dados"> Meus Dados </Link>
-              </div>
-              <div className="d-flex mx-2 border-bottom">
-                  <Link to="/posts"> Posts </Link>
-              </div>
-              <div className="d-flex mx-2 border-bottom">
-                  <a href='#' onClick={(e) => {
-                    e.preventDefault();
-                    User.logout()
-                  }}> Sair </a>
-              </div>
-          </div>
-      )
+    return (
+      <div className="d-flex p-2">
+        {menuItems.map((i) => {
+          if (isCurrentRoute(i.path)) {
+            return (
+              <div className="d-flex mx-2 border-bottom menu-active">
+                <span> {i.title} </span>
+              </div>)
+          }
+          return (
+            <div className="d-flex mx-2 border-bottom">
+              <Link to={i.path}> {i.title} </Link>
+            </div>
+          )
+        })}
+        <div className="d-flex mx-2 border-bottom">
+          <a href='#' onClick={(e) => {
+            e.preventDefault();
+            User.logout()
+          }}> Sair </a>
+        </div>
+      </div>
+    )
   }
 }
 
@@ -57,7 +83,7 @@ export default function App() {
   useEffect(() => { User.getMyProfileData() }, [])
 
   if (authUser.isLoguedIn === true)
-    var loginRequiredRoutes = 
+    var loginRequiredRoutes =
       <Routes>
         <Route
           path='/meus-dados'
@@ -76,8 +102,8 @@ export default function App() {
         <Router>
           <LoginInfo />
           <div className="nav">
-                <HomeMenu />
-            </div>
+            <HomeMenu />
+          </div>
           <Routes>
             <Route
               path='/cadastro'

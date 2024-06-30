@@ -17,3 +17,7 @@
   width: 600px;
   align-items: center;
 }
+
+.menu-active {
+  font-weight: bold;
+}
