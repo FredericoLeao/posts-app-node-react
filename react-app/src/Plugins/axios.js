@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const axiosClient = axios.create({
+const axiosApi = axios.create({
     baseURL: 'http://localhost:8000/api'
 })
 
-axiosClient.interceptors.response.use(
+axiosApi.interceptors.response.use(
     (res) => { return res },
     (err) => {
         if (
@@ -14,8 +14,8 @@ axiosClient.interceptors.response.use(
             sessionStorage.removeItem('postsapp-login-token')
             window.location.href = '/login'
         }
-        return err
+        return Promise.reject(err)
     }
 )
 
-export default axiosClient
+export default axiosApi
