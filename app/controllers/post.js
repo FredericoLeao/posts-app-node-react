@@ -53,6 +53,18 @@ exports.updatePost = async (req, res, next) => {
     }
 }
 
+exports.deletePost = async (req, res, next) => {
+    const deletePost = await PostService.delete({
+        userId: req.userId,
+        postId: req.params.postId,
+    });
+    if (deletePost.error)
+        return res
+            .status(deletePost.status || 422)
+            .json(deletePost.message || '');
+    res.json(deletePost);
+}
+
 exports.getPost = async (req, res, next) => {
     try {
         const post = await PostService.get(req.params.postId);

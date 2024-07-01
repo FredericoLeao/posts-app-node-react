@@ -28,6 +28,18 @@ exports.update = async (updateData) => {
     return JSON.stringify({ ...post, ...postRevision})
 }
 
+exports.delete = async (deleteData) => {
+    const post = await Post(db).findByPk(deleteData.postId);
+    if (post.userId != deleteData.userId)
+        return {
+            error: true,
+            message: 'Sem permissão',
+            status: 403,
+        }
+    await post.destroy();
+    return { success: true }
+}
+
 exports.get = async (postId, countView = false) => {
     const post = await Post(db).findOne({ where: { id: postId }});
     const postRevision = await post.lastRevision;

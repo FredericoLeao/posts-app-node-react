@@ -61,6 +61,10 @@ app.get(
     '/api/post/:postId',
     PostController.getPost,
 );
+app.delete(
+    '/api/post/:postId',
+    PostController.deletePost,
+)
 
 // Comments
 app.post(

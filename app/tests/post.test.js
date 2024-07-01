@@ -254,3 +254,60 @@ test('posts report', async () => {
     expect(Object.keys(postReport.data[0])).toContain('dislikeCount');
     expect(Object.keys(postReport.data[0])).toContain('commentCount');
 })
+
+test('post delete', async () => {
+    const createUser = await userTestUtils.createDefault();
+    const token = await userTestUtils.loginDefault();
+
+    let createPostData = {
+        content: 'Conteúdo de teste para excluir',
+        title: 'Post teste delete',
+    }
+    const postResponse = await axios
+        .post(
+            'http://localhost:8000/api/post',
+            createPostData,
+            { headers: { Authorization: token } },
+        );
+    await axios
+        .delete(
+            `http://localhost:8000/api/post/${postResponse.data.id}`,
+            { headers: { Authorization: token } },
+        )
+        .then((res) => {
+            expect(res.data.success).toBe(true)
+        })
+        .catch((err) => {
+            expect(err.response.status).toBe(200)
+        })
+});
+
+test('post delete - erro ao tentar excluir post de outro usuário', async () => {
+    const createUser = await userTestUtils.createDefault();
+    const token = await userTestUtils.loginDefault();
+
+    const user2 = await userTestUtils.createUser2()
+    const token2 = await userTestUtils.loginUser2()
+
+    let createPostData = {
+        content: 'Conteúdo de teste para excluir',
+        title: 'Post teste delete',
+    }
+    const postResponse = await axios
+        .post(
+            'http://localhost:8000/api/post',
+            createPostData,
+            { headers: { Authorization: token } },
+        );
+    await axios
+        .delete(
+            `http://localhost:8000/api/post/${postResponse.data.id}`,
+            { headers: { Authorization: token2 } },
+        )
+        .then((res) => {
+            expect(res.data.success).toBe(403)
+        })
+        .catch((err) => {
+            expect(err.response.status).toBe(403)
+        })
+});

@@ -22,6 +22,7 @@ module.exports = (sequelize) => {
     viewCount: DataTypes.INTEGER,
     likeCount: DataTypes.INTEGER,
     dislikeCount: DataTypes.INTEGER,
+    deletedAt: DataTypes.DATE,
     lastRevision: {
       type: DataTypes.VIRTUAL,
       get() {
@@ -43,6 +44,7 @@ module.exports = (sequelize) => {
   }, {
     sequelize,
     modelName: 'Post',
+    paranoid: true,
   });
   return Post;
 };
