@@ -13,6 +13,7 @@ export default function AppModal (
   {
     children,
     title,
+    id,
     show=false,
     okButtonValue='OK',
     okButtonDismiss=false,
@@ -23,15 +24,16 @@ export default function AppModal (
   }
 ) {
   const prevShow = usePrevious(show)
+  const modalElementId = `appModal-${id}`
   useEffect(() => {
     if (prevShow !== show && show === true) {
-        const appModal = new Modal(document.getElementById('appModal'))
-        document.getElementById('appModal').addEventListener('hidden.bs.modal', onClosed)
+        const appModal = new Modal(document.getElementById(modalElementId))
+        document.getElementById(modalElementId).addEventListener('hidden.bs.modal', onClosed)
         appModal.show()
     }
   }, [show])
   return (
-      <div className="modal fade" id="appModal" data-bs-backdrop="static" data-bs-keyboard="true" tabIndex="-1" aria-labelledby="ariaLabel" aria-hidden="true">
+      <div className="modal fade" id={modalElementId} data-bs-backdrop="static" data-bs-keyboard="true" tabIndex="-1" aria-labelledby="ariaLabel" aria-hidden="true">
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
