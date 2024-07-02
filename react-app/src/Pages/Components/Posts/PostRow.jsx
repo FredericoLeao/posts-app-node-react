@@ -11,27 +11,28 @@ const formatDateTime = (dateValue) => {
         new Date(dateValue).toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }).slice(0, -3)
 }
 
-const deletePost = async (postId, Post) => {
-    Post.deletePost(postId)
-        .then((res) => {
-            console.log('deleted!!')
-            console.log(res.status)
-        })
-        .catch((err) => {
-            console.log('oxee')
-            console.log(err.response)
-        })
-}
-export default function PostRow ({ post }) {
+export default function PostRow ({ post, onUpdate = () => {}}) {
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
     const Post = usePost()
+
+    const deletePost = async (postId) => {
+        Post.deletePost(postId)
+            .then((res) => {
+                setShowDeleteConfirmation(false)
+                onUpdate()
+            })
+            .catch((err) => {
+                console.log(err.response)
+            })
+    }
 
     return (
         <div className="row g-0 mt-1 my-4" style={{fontSize: '0.8rem' }}>
             <DeletePostConfirmationModal
                 id={`postDeleteConfirmation-${post.id}`}
                 show={showDeleteConfirmation}
-                onSuccess={() => deletePost(post.id, Post)}
+                onSuccess={() => deletePost(post.id)}
+                onClosed={() => setShowDeleteConfirmation(false)}
             />
             <div>
                 <div className="card">

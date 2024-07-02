@@ -13,6 +13,7 @@ export default function DeletePostConfirmationModal ({ show, id, onSuccess = () 
             onOkBtn={onSuccess}
             onClosed={close}
             okButtonValue="Excluir"
+            okButtonDismiss={true}
         >
             <div className="row">
                 <div>

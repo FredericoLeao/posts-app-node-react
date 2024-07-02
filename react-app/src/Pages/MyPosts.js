@@ -30,7 +30,11 @@ export default function MyPosts () {
 
     const PostsList = () => {
         let rows = []
-        myPosts.forEach((p) => { rows.push(<PostRow post={{...p}} key={p.id} />) })
+        myPosts.forEach((p) => {
+            rows.push(
+                <PostRow post={{...p}} key={p.id} onUpdate={getMyPosts} />
+            )
+        })
         return rows;
     }
 
